@@ -1,7 +1,7 @@
 cl-quickcheck
 
 Version:   0.4
-Home page: http://accesscom.com/~darius/software/clickcheck.html
+Home page: https://github.com/mcandre/cl-quickcheck
 Author:    Andrew Pennebaker <andrew.pennebaker@gmail.com>
 License:   http://www.opensource.org/licenses/mit-license.html
 
