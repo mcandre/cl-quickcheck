@@ -1,0 +1,23 @@
+cl-quickcheck
+
+Version:   0.4
+Home page: http://accesscom.com/~darius/software/clickcheck.html
+Author:    Andrew Pennebaker <andrew.pennebaker@gmail.com>
+License:   http://www.opensource.org/licenses/mit-license.html
+
+To get started, start up your Lisp system inside this directory, and
+enter (load "loadme.lisp").  You should see output from self-tests and
+sample tests.  One of the sample suites, money.lisp, has deliberate
+test failures; the others should all pass.
+
+Manifest:
+
+  cl-quickcheck.lisp	The main testing package.
+  documentation.text    Quick-start guide and reference.
+
+  cl-quickcheck.asd		ASDF system definition.
+  updoc.lisp			Experimental documentation- and regression-tester.
+  alpha.lisp			Utility for testing macros, also experimental.
+  other files			Sample tests.
+
+Thanks to Gregory Martin Pfeil for quickcheck.asd.

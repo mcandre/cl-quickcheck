@@ -1,0 +1,289 @@
+QUICK START
+
+cl-quickcheck should be easy to get started with -- here, we load the
+package and use it to test that 2+3=5:
+
+  CL-USER> (load "cl-quickcheck.lisp")
+  CL-USER> (use-package :cl-quickcheck)
+  CL-USER> (cl-quickcheck (is= (+ 2 3) 5))
+  Starting tests with seed 
+  #S(RANDOM-STATE
+     #*0110000000100101111101000101000111001100101100111001010111011101)
+  .
+  1 test submitted; all passed.
+  NIL
+
+Why display the seed?  For repeatability when we run random test
+cases:
+
+  CL-USER> (cl-quickcheck (for-all ((s #'a-string))
+              (is= s s)))
+
+  Starting tests with seed 
+  #S(RANDOM-STATE
+     #*0101110101110110100110111101101110111011101011110000111001110000)
+  ....................................................................................................
+  1 test submitted; all passed.
+  T
+
+  CL-USER> (cl-quickcheck (for-all ((n #'an-integer))
+			  (is= (* 2 n) (+ n n))))
+  Starting tests with seed 
+  #S(RANDOM-STATE
+     #*0110000000100101111101000101000111001100101100111001010111011101)
+  ....................................................................................................
+  1 test submitted; all passed.
+  NIL
+
+The line of dots shows a bunch of successful test cases, one dot for
+each.  The summary line "1 test submitted" means the same single test
+was done on all those random values of N.  We could have done more
+tests:
+
+  CL-USER> (cl-quickcheck (for-all ((n #'an-integer))
+			  (is= (* 2 n) (+ n n))
+			  (is= (* 3 n) (+ n n n)))
+			(for-all ((m #'an-integer) (n #'an-integer))
+			  (is= (+ m n) (+ n m))))
+  Starting tests with seed 
+  #S(RANDOM-STATE
+     #*1101011110111110101110111111111010110000111011101101010000100110)
+  ............................................................................................................................................................................................................................................................................................................
+  3 tests submitted; all passed.
+  NIL
+
+In general, (CL-QUICKCHECK expression...) evaluates the argument
+expressions and reports on any tests performed in that dynamic extent.
+This means you can put the tests off in functions or files or
+wherever; typical usage is then like (cl-quickcheck (my-test-suite)) or
+(cl-quickcheck (load "tests1.lisp") (load "tests2.lisp")).
+
+Let's see what failure looks like:
+
+  CL-USER> (cl-quickcheck (for-all ((n #'an-integer))
+			  (test (evenp n))))
+  Starting tests with seed 
+  #S(RANDOM-STATE
+     #*1011111110011110110110101000010101100100101110101010000011111001)
+  .X
+  FAIL (TEST (EVENP N))
+    for ((N -3))
+    1/2 counterexamples.
+  1 test submitted; 1 FAILED.
+  NIL
+
+Now along with the dot for a passing test case, there's an X for a
+failing one.  Testing continues after a failure unless
+*BREAK-ON-FAILURE* is true; the reason this test run stopped early was
+because FOR-ALL exits early once all the tests in its body have
+failed, on the grounds that finding more counterexamples is probably a
+waste of effort.
+
+You can define test-data generators for your own types of data:
+
+  CL-USER> (defparameter #'a-color 
+	     (lambda () 
+	       (pick-weighted 
+		 (1 'red)
+		 (2 'green)
+		 (1 'blue))))
+  A-COLOR
+  CL-USER> (cl-quickcheck (for-all ((c #'a-color))
+			  (test (symbolp c))))
+  Starting tests with seed 
+  #S(RANDOM-STATE
+     #*1111010101010001100010110010000111111000110000001110000100100111)
+  ....................................................................................................
+  1 test submitted; all passed.
+  NIL
+
+So far we've been running the tests all together in one sequence of
+expressions, with any side effects in one test potentially interfering
+with the next.  Much of the time this is fine, since Lisp encourages a
+mostly-functional style; but for the sake of other styles we can
+isolate tests using WRAP-EACH:
+
+  CL-USER> (defun x-tests ()
+	     (wrap-each (let ((x (set-up-an-x)))
+			  (unwind-protect WRAPPEE
+			    (tear-down-an-x x)))
+	       (test (foo x))
+	       (test (bar x))))
+
+which works as if we'd written
+
+  CL-USER> (defun x-tests ()
+	     (let ((x (set-up-an-x)))
+	       (unwind-protect (test (foo x))
+		 (tear-down-an-x x)))
+	     (let ((x (set-up-an-x)))
+	       (unwind-protect (test (bar x))
+		 (tear-down-an-x x))))
+
+That's the gist of this package.  For more, see either the reference
+manual below, self-test.lisp, or the example test suites.
+
+
+
+REFERENCE
+
+Overall Control of Testing
+
+Macro CL-QUICKCHECK &body body
+Write the current random seed, run BODY with *TESTING* bound to T, and
+report the results of any tests.
+
+Function COLLECT-TEST-RESULTS fn
+Call FN with *TESTING* bound to T, and return a list of the test results.
+
+Function REPORT tests
+Print out a summary of the interesting test results.
+
+Variable *TESTING*
+When true, we're in the dynamic extent of a CL-QUICKCHECK form.
+
+Variable *BREAK-ON-FAILURE*
+When true, test failures jump us immediately into the debugger.
+
+Variable *LOUD*
+When true, we show progress as tests are run with dots to stdout.
+
+
+Test Results
+You won't need to call these functions unless you're doing your own
+processing/reporting on the test results.
+
+Function TEST-NAME test
+By default the name of a test is the source expression that produced
+it, but you can supply your own name with the NAMED constructor.
+
+Function TEST-FLOPPED test
+A test case either passed or flopped; if it flopped, either it was
+skipped or it failed; if it failed, there was a false assertion or an
+unexpected error.  This slot contains NIL if the test passed, 'SKIPPED
+if skipped, T if false assertion, or a condition if an error occurred.
+
+Function TEST-DETAIL test
+Function of no arguments to write any extra info we have on this test
+to standard output.
+
+Function TEST-BINDINGS test
+An A-list of variables and values from any FOR-ALL forms in whose
+dynamic extent this test was performed.
+
+
+Basic Test Macros
+
+Macro TEST flag
+Test that FLAG is true.  Return a test result as the value, and
+feed it to the current testing context.
+
+Macro IS fn &rest operands
+Test that FN applied to OPERANDS is true.  This is like
+(test (,FN ,@OPERANDS)) except it can give a more informative
+failure message detailing the failing arguments.
+
+Macro ISNT fn &rest operands
+Test that FN applied to OPERANDS is false.
+
+Macro IS= x y
+Test that X is EQUAL to Y.
+
+Macro ISNT= x y
+Test that X is not EQUAL to Y.
+
+Macro SHOULD-SIGNAL condition &body body
+Test that evaluating BODY signals (a subtype of) CONDITION.
+
+
+Compound Test Macros
+
+Macro NAMED name &body tests
+Perform the given TESTS with all the test names set to NAME.
+
+Macro ONLY-IF flag test
+Perform the TEST only if FLAG is true, otherwise yield a SKIPPED
+test result whose name is TEST quoted.
+
+Macro FOR-ALL bindings &body body
+Perform the tests in BODY for random values of BINDINGS.  This is
+repeated until all tests have either passed *NUM-TRIALS* times or
+failed, or else 4 * *NUM-TRIALS* iterations have completed.  (The
+latter is possible if tests were skipped via an ONLY-IF form.)
+
+The syntax of BINDINGS is like LET's, but with a different meaning.
+There are two allowed syntaxes for a binding:
+
+  - (SYMBOL EXPRESSION) evaluates EXPRESSION once before the FOR-ALL
+    starts repeating, assumes the value is a generator, and in each
+    iteration binds SYMBOL to a new value produced by the generator.
+  - SYMBOL is shorthand for (SYMBOL SYMBOL-GENERATOR) -- for example,
+    (for-all (k) (foo k)) is equivalent to
+    (for-all ((k k-generator)) (foo k)).  You can define K-GENERATOR
+    however you want with the usual variable binding constructs.
+
+Variable *NUM-TRIALS*
+Number of random trials we want to see pass in FOR-ALL tests.
+
+Macro WRAP-EACH wrapper &body wrappees
+Perform each of the WRAPPEES as if surrounded by WRAPPER (with 
+the literal symbol WRAPPEE inside WRAPPER being the hole where the 
+wrappee appears).  This is useful for factoring out common setup/teardown 
+code for a sequence of tests without compromising their isolation.
+
+
+Test Data Generators
+
+Variable AN-INDEX
+A generator producing a random non-negative integer uniformly from 0
+to *SIZE* - 1.  In general, I won't bother to document how the
+distribution depends on *SIZE* -- just read the source code.
+
+Variable AN-INTEGER
+A generator producing an integer, similarly.
+
+Variable A-REAL
+A generator producing a real number.
+
+Variable A-BOOLEAN
+A generator producing either T or NIL.
+
+Function A-LIST generator
+Return a generator producing a list of values each produced by GENERATOR.
+For example, (a-list a-boolean) might produce (T NIL NIL T).
+
+Function A-TUPLE &rest generators
+Return a generator producing a list of values, one from each of
+GENERATORS in order.  For example, (a-tuple an-integer a-boolean)
+might produce (42 NIL).
+
+Function A-MEMBER &rest generators
+Return a generator producing a value from one of GENERATORS (picked
+at random each time).
+
+Variable K-GENERATOR
+By default, a K in a FOR-ALL is produced by AN-INDEX.
+
+Variable M-GENERATOR
+Variable N-GENERATOR
+By default, an M or N in a FOR-ALL is produced by AN-INTEGER.
+
+Function GENERATE generator
+Ask GENERATOR to produce a value.
+
+Variable *SIZE*
+Bounds the size of random test cases in a generator-dependent way.
+For example, lists from A-LIST have length no greater than *SIZE*.
+
+Macro DEFINE variable expression
+Macro DEFINE (variable param...) &body body
+Like Scheme's top-level DEFINE, except it defines a dynamically-scoped
+variable (as CL won't give us a lexical global).  BODY may start with
+a doc comment.  This macro is helpful for defining new generators.
+
+Macro PICK-WEIGHTED &body choices
+Given CHOICES with constant weights, pick a random one at runtime.
+Each choice clause is of the form (k body...) where K is a natural
+number (fixed at macroexpansion time) and BODY... is a sequence of
+expressions to evaluate.  The probability of each choice is
+proportional to its K value.
