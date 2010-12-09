@@ -56,7 +56,7 @@
 ;  see farther-out stuff in ideas file
 
 (defpackage :cl-quickcheck
-  (:export :cl-quickcheck :collect-test-results :report
+  (:export :quickcheck :collect-test-results :report
            :test :is :isnt :is= :isnt= :should-signal
 	   :named :wrap-each :only-if :for-all 
 	   :an-index :an-integer :a-real :a-boolean :a-list :a-tuple :a-member :a-char :a-string :a-symbol
@@ -70,7 +70,7 @@
 ; Test constructors
 
 (eval-when (:execute :compile-toplevel :load-toplevel)
-  (defmacro cl-quickcheck (&body body)
+  (defmacro quickcheck (&body body)
     "Run BODY and report the results of any tests."
     `(run-quickcheck (lambda () ,@body)))
 
@@ -238,7 +238,7 @@ elements with the same name."
        ,@body)))
 
 (defvar *testing* nil
-  "When true, we're in the dynamic extent of a cl-quickcheck form.")
+  "When true, we're in the dynamic extent of a quickcheck form.")
 
 (defun collect-test-results (fn)
   "Call FN with *TESTING* true, and return a list of the test results."
