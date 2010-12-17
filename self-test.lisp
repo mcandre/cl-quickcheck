@@ -96,6 +96,8 @@ FAIL (IS= (+ K 1) K)
 
    (for-all (k)
      (is= 'a (pick-weighted (20 'a))))
+   (locally
+       #+sbcl (declare (sb-ext:disable-package-locks cl:random))
    (flet ((random (n) 0))
      (is= 'a (pick-weighted (1 'a) (1 'b))))
    (flet ((random (n) 1))
@@ -103,7 +105,7 @@ FAIL (IS= (+ K 1) K)
    (flet ((random (n) 1))
      (is= 'a (pick-weighted (2 'a) (1 'b))))
    (flet ((random (n) 2))
-     (is= 'b (pick-weighted (2 'a) (1 'b))))
+       (is= 'b (pick-weighted (2 'a) (1 'b)))))
 
    (for-all ((b a-boolean)) 
      (is typep b 'boolean))
