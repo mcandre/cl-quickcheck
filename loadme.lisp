@@ -1,6 +1,6 @@
 (load "cl-quickcheck.lisp")
 
-(cl-quickcheck:cl-quickcheck 
+(cl-quickcheck:quickcheck 
  (load "self-test.lisp")
  (load "updoc.lisp")
  (load "alpha.lisp")
