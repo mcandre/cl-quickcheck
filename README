@@ -17,7 +17,7 @@ test failures; the others should all pass.
 Manifest:
 
   cl-quickcheck.lisp	The main testing package.
-  documentation.text    Quick-start guide and reference.
+  documentation.txt    Quick-start guide and reference.
 
   cl-quickcheck.asd		ASDF system definition.
   updoc.lisp			Experimental documentation- and regression-tester.
