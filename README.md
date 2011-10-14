@@ -4,14 +4,6 @@ HOMEPAGE
 
 [http://www.yellosoft.us/quickcheck](http://www.yellosoft.us/quickcheck)
 
-VERSION
-
-cl-quickcheck 0.4
-
-AUTHOR
-
-Andrew Pennebaker <andrew.pennebaker@gmail.com>
-
 EXAMPLE
 
 	> (load "loadme.lisp")
