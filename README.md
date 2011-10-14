@@ -4,35 +4,31 @@ HOMEPAGE
 
 [http://www.yellosoft.us/quickcheck](http://www.yellosoft.us/quickcheck)
 
-Version: 0.4
+VERSION
 
-Author: Andrew Pennebaker <andrew.pennebaker@gmail.com>
+cl-quickcheck 0.4
 
-License: http://www.opensource.org/licenses/mit-license.html
+AUTHOR
 
-Original Name: clickcheck
+Andrew Pennebaker <andrew.pennebaker@gmail.com>
 
-Original Author: Darius Bacon <darius@wry.me>
+LICENSE
 
-[Original Homepage](http://wry.me/~darius/software/clickcheck.html)
+[http://www.opensource.org/licenses/mit-license.html](http://www.opensource.org/licenses/mit-license.html)
+
+ORIGINAL NAME
+
+clickcheck
+
+ORIGINAL AUTHOR
+
+Darius Bacon <darius@wry.me>
+
+ORIGINAL HOMEPAGE
+
+[http://wry.me/~darius/software/clickcheck.html](http://wry.me/~darius/software/clickcheck.html)
 
 To get started, start up your Lisp system inside this directory, and
 enter `(load "loadme.lisp")`.  You should see output from self-tests and
 sample tests.  One of the sample suites, money.lisp, has deliberate
 test failures; the others should all pass.
-
-MANIFEST
-
-cl-quickcheck.lisp The main testing package.
-
-documentation.txt Quick-start guide and reference.
-
-cl-quickcheck.asd ASDF system definition.
-
-updoc.lisp Experimental documentation- and regression-tester.
-
-alpha.lisp Utility for testing macros, also experimental.
-
-other files Sample tests.
-
-Thanks to Gregory Martin Pfeil for quickcheck.asd.
