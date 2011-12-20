@@ -1,10 +1,10 @@
-cl-quickcheck - a Common Lisp port of the QuickCheck unit test framework
+# cl-quickcheck - a Common Lisp port of the QuickCheck unit test framework
 
-HOMEPAGE
+## HOMEPAGE
 
 [http://www.yellosoft.us/quickcheck](http://www.yellosoft.us/quickcheck)
 
-EXAMPLE
+## EXAMPLE
 
 	> (load "loadme.lisp")
 	T
