@@ -7,7 +7,7 @@
 # EXAMPLE
 
     $ clisp
-    > (load 'loadme)
+    > (load 'example)
     ...
     T
 
