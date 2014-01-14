@@ -57,7 +57,6 @@ Guard can automatically run testing when the code changes:
 
     $ bundle
     $ guard -G Guardfile-cucumber
-    >
     ...
 
 # INSTALL
