@@ -6,7 +6,8 @@
 
 # EXAMPLE
 
-    $ clisp example.lisp
+See [money.lisp](https://github.com/mcandre/cl-quickcheck/blob/master/money.lisp) and other tests.
+
     $ clisp example.lisp 
     Starting tests with seed #S(RANDOM-STATE #*1111111000010000101001011100110101100110011101010000110100110111)
     ...
