@@ -6,5 +6,7 @@
 
 ## EXAMPLE
 
-	> (load "loadme.lisp")
-	T
+    $ clisp
+    > (load 'loadme)
+    ...
+    T
