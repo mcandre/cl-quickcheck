@@ -6,10 +6,23 @@
 
 # EXAMPLE
 
-    $ clisp
-    > (load 'example)
+    $ clisp example.lisp
+    $ clisp example.lisp 
+    Starting tests with seed #S(RANDOM-STATE #*1111111000010000101001011100110101100110011101010000110100110111)
     ...
-    T
+    ERROR (ISNT MONEY= (DOLLARS 'M) (FRANCS M))
+
+    =: M is not a number
+
+      with values #S(MONEY :AMOUNT M :CURRENCY USD) #S(MONEY :AMOUNT -2 :CURRENCY FRANC)
+      for ((M -2))
+      100/100 counterexamples.
+    FAIL (IS MONEY= (DOLLARS M) (DOLLARS N))
+      with values #S(MONEY :AMOUNT 11 :CURRENCY USD) #S(MONEY :AMOUNT -19 :CURRENCY USD)
+      for ((M 11) (N -19))
+      98/100 counterexamples.
+      0 cases checked and passed in 100 attempts.
+    95 tests submitted; 2 FAILED.
 
 # REQUIREMENTS
 
