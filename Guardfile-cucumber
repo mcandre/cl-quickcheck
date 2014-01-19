@@ -1,10 +1,9 @@
 guard :shell do
   watch(/.*\.(rb|feature|lisp)/) do |m|
     title = 'Cucumber'
-    msg = `cucumber 2>&1`
+    eager 'cucumber 2>&1'
     status = ($?.success? && :success) || :failed
-
-    n msg, title, status
-    "-> #{msg}"
+    n '', title, status
+    ''
   end
 end
