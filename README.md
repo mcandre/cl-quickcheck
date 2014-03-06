@@ -4,6 +4,11 @@
 
 [http://www.yellosoft.us/quickcheck](http://www.yellosoft.us/quickcheck)
 
+# INSTALL
+
+    $ clisp
+    > (ql:quickload 'cl-quickcheck)
+
 # EXAMPLE
 
 See [example.lisp](https://github.com/mcandre/cl-quickcheck/blob/master/example.lisp):
@@ -36,8 +41,11 @@ See [example.lisp](https://github.com/mcandre/cl-quickcheck/blob/master/example.
 * [Bundler](http://bundler.io/)
 * [Cucumber](http://cukes.info/)
 * [Guard](http://guardgem.org/)
+* [aspelllint](https://github.com/mcandre/aspelllint)
 
-# TESTING
+# DEVELOPMENT
+
+## Testing
 
 Ensure the example script works as expected:
 
@@ -59,7 +67,7 @@ Guard can automatically run testing when the code changes:
     $ guard -G Guardfile-cucumber
     ...
 
-# INSTALL
+## Spell Check
 
-    $ clisp
-    > (ql:quickload 'cl-quickcheck)
+    $ aspelllint
+    ...
