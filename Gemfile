@@ -6,4 +6,5 @@ group :development do
   gem 'rspec'
   gem 'cucumber'
   gem 'aspelllint'
+  gem 'lili', '~> 0.2'
 end
