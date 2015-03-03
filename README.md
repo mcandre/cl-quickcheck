@@ -42,10 +42,7 @@ $ clisp
 ## Optional
 
 * [Ruby](https://www.ruby-lang.org/) 2+
-* [Bundler](http://bundler.io/)
-* [Cucumber](http://cukes.info/)
-* [Guard](http://guardgem.org/)
-* [aspelllint](https://github.com/mcandre/aspelllint)
+* [Node.js](http://nodejs.org/) 0.8+
 
 # DEVELOPMENT
 
@@ -75,9 +72,12 @@ $ guard -G Guardfile-cucumber
 ...
 ```
 
-## Spell Check
+## Linting
+
+Keep the code tidy:
 
 ```
-$ aspelllint
+$ npm install
+$ rake lint
 ...
 ```

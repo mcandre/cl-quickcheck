@@ -1,0 +1,42 @@
+# ln -s .../.editorconfig ~/.editorconfig
+
+root = true
+
+# Default to Google Style
+# https://code.google.com/p/google-styleguide/
+[*]
+end_of_line = lf
+insert_final_newline = true
+charset = utf-8
+trim_trailing_whitespace = true
+
+# Too many exceptions
+max_line_length = 800
+
+spaces_around_operators = true
+spaces_around_brackets = false
+indent_style = space
+indent_size = 2
+indent_brace_style = K&R
+curly_bracket_next_line = false
+continuation_indent_size 4
+
+# Makefiles
+[{Makefile*,*.mf}]
+indent_style = tab
+
+# Markdown
+[{*.md,*.markdown}]
+indent_size = 4
+
+# JavaScript
+[*.js]
+quote_type = single
+
+# Lisp
+[{*.lisp,*.scm,*.rkt,*.lsp,*.clj,*.el}]
+indent_size = none
+
+# Windows files
+[{*.bat,*reg,*.ps1,*.vbs,*.cs,*.fs,*.ahk}]
+end_of_line = crlf
