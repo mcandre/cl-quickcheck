@@ -27,7 +27,7 @@ indent_style = tab
 
 # Markdown
 [{*.md,*.markdown}]
-indent_size = 4
+indent_size = none
 
 # JavaScript
 [*.js]
@@ -38,5 +38,5 @@ quote_type = single
 indent_size = none
 
 # Windows files
-[{*.bat,*reg,*.ps1,*.vbs,*.cs,*.fs,*.ahk}]
+[{*.bat,*reg,*.ps1,*.vbs,*.cs,*.csproj,*.fs,*.sln,*.xaml*,*.ahk}]
 end_of_line = crlf
