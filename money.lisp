@@ -25,11 +25,11 @@
 
 (when *testing*
   (for-all (m)
-    (isnt money= (dollars 'm) (francs m))   ; deliberately failing
+    (isnt money= (dollars m) (francs m))   ; deliberately failing
     (is money= (dollars m) (dollars m)))
   (for-all (m n)
     (only-if (/= m n)
-      (is money= (dollars m) (dollars n)))      ; deliberately failing
+             (isnt money= (dollars m) (dollars n)))      ; deliberately failing
     (is money=
-	(money* m (francs n))
-	(francs (* m n)))))
+        (money* m (francs n))
+        (francs (* m n)))))
