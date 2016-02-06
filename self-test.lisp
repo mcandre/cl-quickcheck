@@ -59,7 +59,7 @@ FAIL (IS = (+ 2 3) 4)
 	(output-of (report (list (isolate (is = (+ 2 3) 4))))))
 
    (named "*BREAK-ON-FAILURE* set to T disables error interception"
-	  (should-signal 'simple-type-error
+	  (should-signal 'type-error
 			 (quietly (let ((*break-on-failure* t)) 
 				    (is string= 1 2)))))
    (named "*BREAK-ON-FAILURE* set to T signals error on test failure"
