@@ -9,33 +9,42 @@ end_of_line = lf
 insert_final_newline = true
 charset = utf-8
 trim_trailing_whitespace = true
-
-# Too many exceptions
-max_line_length = 800
-
+max_line_length = 120
 spaces_around_operators = true
 spaces_around_brackets = false
 indent_style = space
 indent_size = 2
 indent_brace_style = K&R
 curly_bracket_next_line = false
-continuation_indent_size 4
+continuation_indent_size = 4
 
-# Makefiles
-[{Makefile*,*.mf}]
+# Make, Go
+[{Makefile*,*.mf,*.go}]
 indent_style = tab
+
+# F#
+[{*.fs,*.fsx}]
+indent_style = space
 
 # Markdown
 [{*.md,*.markdown}]
 indent_size = none
+
+# PEP8
+[*.py]
+indent_size = 4
 
 # JavaScript
 [*.js]
 quote_type = single
 
 # Lisp
-[{*.lisp,*.scm,*.rkt,*.lsp,*.clj,*.el}]
+[{*.lisp,*.scm,*.rkt,*.lsp,*.clj,*.el,*.emacs}]
 indent_size = none
+
+# Pagragraph-oriented text
+[{*.txt,*.text,*.xml,*.*htm*,*.erb,*.tex,*.md,*.markdown,*.textile,*.ps,Makefile*,Rakefile*,*.mf,*.plist,*.bat,*.*sh,.*profile*,.editorconfig,.gitignore*,.*rc*,*.profile,*.epf,*.cfg}]
+max_line_length = none
 
 # Windows files
 [{*.bat,*reg,*.ps1,*.vbs,*.cs,*.csproj,*.fs,*.sln,*.xaml*,*.ahk}]
