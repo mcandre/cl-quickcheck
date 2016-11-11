@@ -7,5 +7,5 @@
 # rm .envrc
 
 source_up
-source "$HOME/.bashrc.d/direnv/ndenv.sh"
+source "$HOME/.bashrc.d/direnv/nodenv.sh"
 source "$HOME/.bashrc.d/direnv/chruby.sh"
