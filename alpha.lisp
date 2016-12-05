@@ -9,7 +9,7 @@
 (defun alpha= (x y)
   "Return true iff X and Y are equal up to renaming of bound variables.
 Very crude/incomplete implementation, needs a real code-walker."
-  (equal (normalize 0 nil x) 
+  (equal (normalize 0 nil x)
 	 (normalize 0 nil y)))
 
 (defun normalize (n env x)
@@ -25,7 +25,7 @@ bound."
 	   (let* ((new-vars (rename n vars))
 		  (new-n (+ n (length vars)))
 		  (new-env (bind vars new-vars env)))
-	     `(let ,(mapcar #'list 
+	     `(let ,(mapcar #'list
 			    new-vars
 			    (normalize-each n env vals))
 		,@(normalize-each new-n new-env body)))))
@@ -71,9 +71,9 @@ bound."
   (is alpha= '(x y z) '(x y z))
   (isnt alpha= '(x y z) '(y x z))
   (is alpha= '(x (let ((x 5)) x)) '(x (let ((y 5)) y)))
-  (is alpha= 
+  (is alpha=
       '(let ((x 0)) (let ((y 1)) (f y)))
       '(let ((x 0)) (let ((x 1)) (f x))))
-  (isnt alpha= 
+  (isnt alpha=
 	'(let ((x 0)) (let ((y 1)) (f x)))
 	'(let ((x 0)) (let ((x 1)) (f x)))))

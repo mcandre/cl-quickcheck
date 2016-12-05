@@ -7,7 +7,7 @@ Then(/^the output is correct for each test$/) do
 
   lines.length.should == 17
 
-  banner = 'Starting tests with seed 
+  banner = 'Starting tests with seed
 #S(RANDOM-STATE'
 
   lines[0 .. 1].join("\n").should == banner
@@ -19,7 +19,7 @@ Then(/^the output is correct for each test$/) do
   lines[3].should =~ /^[\.@X\-]+$/
 
   lines[4].should == 'ERROR (ISNT MONEY= (DOLLARS \'M) (FRANCS M))'
-  lines[5 .. 7].join("\n").should == '  
+  lines[5 .. 7].join("\n").should == '
 =: M is not a number
 '
   lines [8].should =~ /^  with values \#S\(MONEY \:AMOUNT M \:CURRENCY USD\) \#S\(MONEY \:AMOUNT (-)?[0-9]+ \:CURRENCY FRANC\)$/

@@ -3,7 +3,7 @@
 # EXAMPLE
 
 ```
-$ clisp example.lisp 
+$ clisp example.lisp
 Starting tests with seed #S(RANDOM-STATE #*1111111000010000101001011100110101100110011101010000110100110111)
 ...
 ERROR (ISNT MONEY= (DOLLARS 'M) (FRANCS M))
@@ -23,10 +23,6 @@ FAIL (IS MONEY= (DOLLARS M) (DOLLARS N))
 
 See [example.lisp](https://github.com/mcandre/cl-quickcheck/blob/master/example.lisp) for more information.
 
-# HOMEPAGE
-
-http://www.yellosoft.us/quickcheck
-
 # INSTALL
 
 ```
@@ -41,8 +37,10 @@ $ clisp
 
 ## Optional
 
-* [Ruby](https://www.ruby-lang.org/) 2+
+* [ruby](https://www.ruby-lang.org/) 2+
 * [Node.js](http://nodejs.org/) 0.8+
+* [pargs](https://github.com/mcandre/pargs)
+* [editorconfig-tools](https://www.npmjs.com/package/editorconfig-tools)
 
 # DEVELOPMENT
 

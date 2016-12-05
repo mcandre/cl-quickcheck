@@ -47,10 +47,10 @@
         (is set-equal
 	    (union x (union y z))
 	    (union (union x y) z))
-	(is set-equal 
+	(is set-equal
 	    (intersection x (intersection y z))
 	    (intersection (intersection x y) z))
-	(is set-equal 
+	(is set-equal
 	    (union x (intersection y z))
 	    (intersection (union x y) (union x z)))
 	(is set-equal

@@ -22,12 +22,12 @@
 ; documentation and you need to keep the examples in your docs up to
 ; date for your customers anyway (he said naively).
 
-; The syntax in doc files is kind of unfortunate: we still need #{} 
+; The syntax in doc files is kind of unfortunate: we still need #{}
 ; wrapping like the corresponding read macro in Lisp files.
 
 ; We ought to try doing something about testing examples from doc
 ; strings -- does anyone put many examples there?
- 
+
 ; I'll bet it'd help if, on test failure, your IDE could give you the
 ; option of updating the test to follow the newer results.  (Instead
 ; of manually editing them.)
@@ -47,7 +47,7 @@
 
 (defmacro doc-test (expr &rest expectation)
   `(run-tester '(doc-test ,expr ,@expectation)
-               (lambda () 
+               (lambda ()
                  (equal ',expectation (multiple-value-list ,expr)))))
 
 (defun parse-doc-stream (stream)

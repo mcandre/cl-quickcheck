@@ -39,7 +39,7 @@
 ;
 ; TODO:
 ;  rest of quickcheck
-;    trivial-if 
+;    trivial-if
 ;    histograms
 ;    function generation
 ;  check whether defaults for *num-trials* and *size* work well
@@ -58,7 +58,7 @@
 (defpackage :cl-quickcheck
   (:export :quickcheck :collect-test-results :report
            :test :is :isnt :is= :isnt= :should-signal
-	   :named :wrap-each :only-if :for-all 
+	   :named :wrap-each :only-if :for-all
 	   :an-index :an-integer :a-real :a-boolean :a-list :a-tuple :a-member :a-char :a-string :a-symbol
            :k-generator :m-generator :n-generator
 	   :define :generate :pick-weighted
@@ -109,7 +109,7 @@ detailing the failing arguments."
 body calling the same variable as bound in the enclosing dynamic scope."
     (let ((parent (gensym)))
       `(let ((,name (let ((,parent ,name))
-		      (flet ((call-next-function ,params 
+		      (flet ((call-next-function ,params
 			       (funcall ,parent ,@params)))
 			(lambda ,params ,@body1)))))
 	 ,@body2)))
@@ -128,9 +128,9 @@ as it completes.")
       (funcall fn)))
 
   (defmacro wrap-each (wrapper &body wrappees)
-    "Perform each of the WRAPPEES as if surrounded by WRAPPER (with 
-the literal symbol WRAPPEE inside WRAPPER being the hole where the 
-wrappee appears).  This is useful for factoring out common setup/teardown 
+    "Perform each of the WRAPPEES as if surrounded by WRAPPER (with
+the literal symbol WRAPPEE inside WRAPPER being the hole where the
+wrappee appears).  This is useful for factoring out common setup/teardown
 code for a sequence of tests without compromising their isolation."
     ;; TODO: use a macrolet for a cleaner expansion?  Make wrappee a
     ;; parameter?
@@ -155,7 +155,7 @@ test result whose name is TEST quoted."
     "Return BINDING's pair of name and generator expression."
     (cond ((and (consp binding) (= 2 (length binding)))
 	   binding)
-	  ((symbolp binding) 
+	  ((symbolp binding)
 	   (list binding (default-generator binding)))
 	  (t (error "Not a variable binding: ~S" binding))))
 
@@ -177,7 +177,7 @@ You'll have to define the meaning of this shorthand elsewhere."
 ; A (general) test is either a test case or a list of general tests.
 ; TODO: be consistent about naming tests vs. cases in the code.
 
-(defstruct test 
+(defstruct test
   name      ; What test was run.
   flopped   ; NIL if passed, 'SKIPPED if skipped, T if false assertion,
 	    ; or a condition if an error occurred.
@@ -244,8 +244,8 @@ elements with the same name."
   "Call FN with *TESTING* true, and return a list of the test results."
   (let ((tests '())
 	(*testing* t))
-    (let-dfv ((*logger* (test) 
-		(push test tests) 
+    (let-dfv ((*logger* (test)
+		(push test tests)
 		test))
       (funcall fn))
     (nreverse tests)))
@@ -274,14 +274,14 @@ list of a function to call for the actual test, plus its arguments."
     (if condition
         (answer name condition)
         (destructuring-bind (fn . arguments) fn-and-arguments
-	  (answer name 
+	  (answer name
 		  (call-tester (lambda () (apply fn arguments)))
 		  (lambda ()
 		    (format t "~%  with values~{ ~S~}" arguments)))))))
 
 (defun run-should-signal (name expected-condition fn)
   "Test that calling FN signals (a subtype of) EXPECTED-CONDITION."
-  (multiple-value-bind (value condition) 
+  (multiple-value-bind (value condition)
 		       (ignore-errors (prog1 (funcall fn)))
     (declare (ignore value))
     (answer name (not (typep condition expected-condition)))))
@@ -308,7 +308,7 @@ list of a function to call for the actual test, plus its arguments."
   (let ((status (make-hash-table :test #'equal)))
     (let-dfv ((*logger* (test)
 	        (let ((name (test-name test)))
-		  (setf (gethash name status) 
+		  (setf (gethash name status)
 			(tally test (gethash name status 0)))
 		  (call-next-function test))))
       (loop repeat (* 4 *num-trials*)
@@ -332,9 +332,9 @@ either passed *NUM-TRIALS* times or failed at least once."
 (defun hash-table-values (table)
   "Return a list of TABLE's values in arbitrary order."
   (let ((results '()))
-    (maphash (lambda (key value) 
+    (maphash (lambda (key value)
 	       (declare (ignore key))
-	       (push value results)) 
+	       (push value results))
 	     table)
     results))
 
@@ -344,7 +344,7 @@ either passed *NUM-TRIALS* times or failed at least once."
 	 (bindings (mapcar #'list vars values)))
     (let-dfv ((*logger* (test)
 	        (call-next-function
-		 (update-bindings test 
+		 (update-bindings test
 				  (append (test-bindings test) bindings)))))
       (apply test-fn values))))
 
@@ -385,7 +385,7 @@ either passed *NUM-TRIALS* times or failed at least once."
 (define (an-integer)
   (- (random (+ *size* *size* 1)) *size*))
 
-(define (a-real) 
+(define (a-real)
   (- (random (float (* 2 *size*)))
      *size*))
 
@@ -468,7 +468,7 @@ either passed *NUM-TRIALS* times or failed at least once."
   "Report the results of the test cases of a test, if they're interesting."
   (multiple-value-bind (num-failed num-skipped num-passed num-cases)
 		       (distribution cases)
-    (unless (and (= 0 num-failed) 
+    (unless (and (= 0 num-failed)
 		 (or (= 0 num-skipped) (<= *num-trials* num-passed)))
       (print-test (verdict cases))
       (when (< 1 num-cases)

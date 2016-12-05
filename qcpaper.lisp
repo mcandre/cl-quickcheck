@@ -48,7 +48,7 @@
 (defun insert (x xs)
   (cond ((null xs)
 	 (list x))
-	((< (first xs) x) 
+	((< (first xs) x)
 	 (cons (first xs)
 	       (insert x (rest xs))))
 	(t (cons x xs))))

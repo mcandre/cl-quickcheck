@@ -53,17 +53,17 @@ And CUTE really is the name they give this in the Scheme SRFI... ugh."
 		 for v in vars
 		 unless (eq '<> a)
 		 collect (list v a))
-       (lambda (<>) 
+       (lambda (<>)
 	 (,fn ,@vars)))))
 
 (define (an-idx)
-  (list-to-idx (generate (a-list (a-tuple an-integer 
+  (list-to-idx (generate (a-list (a-tuple an-integer
                                           (a-list an-integer))))))
 
 (when *testing*
   (for-all ((idx an-idx))
     (is idx-equal idx (idx-invert (idx-invert idx))))
-  (for-all ((idx an-idx) 
+  (for-all ((idx an-idx)
 	    (keys (a-list an-integer)))
     (test (every (cute subsetp (idx-lookup-all idx keys) <>)
 		 (lookup-each idx keys)))

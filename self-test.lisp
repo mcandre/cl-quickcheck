@@ -45,7 +45,7 @@
        (output-of (report (isolate))))
   (is= "..
 2 tests submitted; all passed."
-       (output-of (report (isolate (test (= 0 0)) 
+       (output-of (report (isolate (test (= 0 0))
 				   (test (= 1 1))))))
    (is= ".X
 FAIL (TEST NIL)
@@ -60,11 +60,11 @@ FAIL (IS = (+ 2 3) 4)
 
    (named "*BREAK-ON-FAILURE* set to T disables error interception"
 	  (should-signal 'type-error
-			 (quietly (let ((*break-on-failure* t)) 
+			 (quietly (let ((*break-on-failure* t))
 				    (is string= 1 2)))))
    (named "*BREAK-ON-FAILURE* set to T signals error on test failure"
 	  (should-signal 'simple-error
-			 (quietly (let ((*break-on-failure* t)) 
+			 (quietly (let ((*break-on-failure* t))
 				    (test nil)))))
 
    (is= 'skipped
@@ -79,7 +79,7 @@ FAIL \"Name\"
 				    (named "Name" (test t))))))
 
    (let ((*num-trials* 3))
-     (is= ".X.X.X" 
+     (is= ".X.X.X"
 	  (output-of (isolate (for-all (k)
 				(is= (* 2 k) (+ k k))
 				(is= (* 2 k) (+ k k 1))))))
@@ -107,15 +107,15 @@ FAIL (IS= (+ K 1) K)
    (flet ((random (n) 2))
        (is= 'b (pick-weighted (2 'a) (1 'b)))))
 
-   (for-all ((b a-boolean)) 
+   (for-all ((b a-boolean))
      (is typep b 'boolean))
-   (for-all (k) 
-     (is integerp k) 
+   (for-all (k)
+     (is integerp k)
      (is <= 0 k (1- *size*)))
    (for-all (n)
-     (is integerp n) 
+     (is integerp n)
      (is <= (- *size*) n *size*))
-   (for-all ((r a-real)) 
+   (for-all ((r a-real))
      (is realp r)
      (is <= (- *size*) r *size*))
    (for-all ((ns (a-list an-integer)))
@@ -141,7 +141,7 @@ PASS (TEST T)
     "If enough trials passed, don't bother reporting skipped cases."
     (is= "
 1 test submitted; all passed."
-	 (output-of (report (quietly 
+	 (output-of (report (quietly
 			     (loop repeat *num-trials*
 				   collect (only-if t (test t)))
 			     (only-if nil (test t)))))))
@@ -155,7 +155,7 @@ SKIP (TEST NIL)
 	  (output-of (report (quietly (for-all ((k (lambda () 0)))
 					(only-if nil (test nil))))))))
 
-   (named 
+   (named
     "Tests are reported in the order they were first encountered."
     (is= "
 FAIL A
@@ -170,7 +170,7 @@ FAIL C
 			     (named 'a (test nil)))))))
 
    (is= "HEY1THERE1"
-	(output-of 
+	(output-of
 	 (wrap-each (let ((x 0))
 		      (princ wrappee)
 		      (princ (incf x)))
@@ -185,7 +185,7 @@ FAIL C
    (is= 42 (funcall a-foo))
 
    (named "Bindings reported from FOR-ALL nest properly."
-	  (is= (test-bindings (quietly 
+	  (is= (test-bindings (quietly
 			       (for-all ((a (lambda () 1)))
 				 (for-all ((a (lambda () 2)))
 				   (test nil)))))

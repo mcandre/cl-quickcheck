@@ -11,15 +11,11 @@
     "lib": "."
   },
   "engines": {
-    "node": ">=0.11.6"
+    "node": ">=4.5.0"
   },
   "scripts": {},
   "dependencies": {},
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-cli": "~0.1.13",
-    "grunt-exec": "~0.4.6",
-    "jshint": ">=2.1.2",
-    "editorconfig-tools": ">= 0.0.1"
+    "editorconfig-tools": ">= 0.1.1"
   }
 }

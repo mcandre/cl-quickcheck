@@ -2,50 +2,58 @@
 
 root = true
 
-# Default to Google Style
-# https://code.google.com/p/google-styleguide/
+# bash8
 [*]
+charset = utf-8
 end_of_line = lf
 insert_final_newline = true
-charset = utf-8
 trim_trailing_whitespace = true
-max_line_length = 120
-spaces_around_operators = true
-spaces_around_brackets = false
+max_line_length = none
 indent_style = space
-indent_size = 2
-indent_brace_style = K&R
-curly_bracket_next_line = false
-continuation_indent_size = 4
+indent_size = 4
 
-# Make, Go
+# Lexer restrictions
 [{Makefile*,*.mf,*.go}]
 indent_style = tab
-
-# F#
 [{*.fs,*.fsx}]
 indent_style = space
 
-# Markdown
-[{*.md,*.markdown}]
-indent_size = none
-
-# PEP8
-[*.py]
-indent_size = 4
-
-# JavaScript
-[*.js]
+# Natural HTML nesting
+[{*.js}]
 quote_type = single
 
-# Lisp
-[{*.lisp,*.scm,*.rkt,*.lsp,*.clj,*.el,*.emacs}]
+# Poetry
+[{*.txt,*.md}]
+indent_size = none
+[{*.lisp,*.lsp,*.scm,*.el,*.rkt,*.abcl,*.ccl,*.clisp,*.ecl,*.sbcl,.eclrc,.sbclrc,*.m,*.mm}]
 indent_size = none
 
-# Pagragraph-oriented text
-[{*.txt,*.text,*.xml,*.*htm*,*.erb,*.tex,*.md,*.markdown,*.textile,*.ps,Makefile*,Rakefile*,*.mf,*.plist,*.bat,*.*sh,.*profile*,.editorconfig,.gitignore*,.*rc*,*.profile,*.epf,*.cfg}]
-max_line_length = none
-
-# Windows files
-[{*.bat,*reg,*.ps1,*.vbs,*.cs,*.csproj,*.fs,*.sln,*.xaml*,*.ahk}]
+# Windows junk
+[{*.cmd,*.bat,*.reg,*.ps1,*.vbs,*.cs,*.fs,*.fsx,*.ahk}]
 end_of_line = crlf
+
+#
+# legacy
+#
+[{*.rb,Gemfile,*.gemspec,Rakefile,Vagrantfile,Guardfile*,*.reek,*.pp,*.feature}]
+indent_size = 2
+[{*.js,*.json,*.coffee,*.ts,*.dart,*.pjs,.eslintrc,.jshintrc,.jslintrc,.bowerrc}]
+indent_size = 2
+[{*.html,*.css,*.less,*.scss,*.styl,*.php,*.tex}]
+indent_size = 2
+[{*.yml,*.yaml,*.xml}]
+indent_size = 2
+[{*.ps1,*.ahk,.emacs,.vimrc}]
+indent_size = 2
+[{*.java,*.groovy,*.scala,*.gradle}]
+indent_size = 2
+[{*.c,*.h,*.cpp,*.rs,*.d,*.swift,*.vala,*.sac}]
+indent_size = 2
+[{*.asm,*.s,*.ll}]
+indent_size = 2
+[{*.pl,*.pm,*.f08,*.j,*.lua,*.st,*.io,*.pas,*.oz}]
+indent_size = 2
+[{*.hs,*.ml,*.v,*.sml,*.fs,*.fsx,*.ma,*.psql,*.R}]
+indent_size = 2
+[{*.awk,*.erl,*.escript,*.yaws,*.bf,*.bs,*.cob,*.factor,*.tcl,*.rl}]
+indent_size = 2
