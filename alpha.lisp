@@ -10,27 +10,27 @@
   "Return true iff X and Y are equal up to renaming of bound variables.
 Very crude/incomplete implementation, needs a real code-walker."
   (equal (normalize 0 nil x)
-	 (normalize 0 nil y)))
+   (normalize 0 nil y)))
 
 (defun normalize (n env x)
   "Return expression X in canonical form for comparison.  Bound
 variables are renamed as a function of the place in X where they get
 bound."
   (cond ((null x) '())
-	((atom x) (lookup env x))
-	((letp x)
-	 (let ((vars (mapcar #'first (second x)))
-	       (vals (mapcar #'second (second x)))
-	       (body (cddr x)))
-	   (let* ((new-vars (rename n vars))
-		  (new-n (+ n (length vars)))
-		  (new-env (bind vars new-vars env)))
-	     `(let ,(mapcar #'list
-			    new-vars
-			    (normalize-each n env vals))
-		,@(normalize-each new-n new-env body)))))
-	(t (cons (first x)
-		 (normalize-each n env (rest x))))))
+  ((atom x) (lookup env x))
+  ((letp x)
+   (let ((vars (mapcar #'first (second x)))
+         (vals (mapcar #'second (second x)))
+         (body (cddr x)))
+     (let* ((new-vars (rename n vars))
+      (new-n (+ n (length vars)))
+      (new-env (bind vars new-vars env)))
+       `(let ,(mapcar #'list
+          new-vars
+          (normalize-each n env vals))
+    ,@(normalize-each new-n new-env body)))))
+  (t (cons (first x)
+     (normalize-each n env (rest x))))))
 
 (defun normalize-each (n env xs)
   (mapcar (lambda (x) (normalize n env x)) xs))
@@ -39,8 +39,8 @@ bound."
 
 (defun rename (n vars)
   (loop for v in vars
-	for i from n
-	collect (concat-symbol :alpha "g" i)))
+  for i from n
+  collect (concat-symbol :alpha "g" i)))
 
 (defun lookup (env x)
   (or (and (symbolp x) (cdr (assoc x env :test #'eq)))
@@ -75,5 +75,5 @@ bound."
       '(let ((x 0)) (let ((y 1)) (f y)))
       '(let ((x 0)) (let ((x 1)) (f x))))
   (isnt alpha=
-	'(let ((x 0)) (let ((y 1)) (f x)))
-	'(let ((x 0)) (let ((x 1)) (f x)))))
+  '(let ((x 0)) (let ((y 1)) (f x)))
+  '(let ((x 0)) (let ((x 1)) (f x)))))

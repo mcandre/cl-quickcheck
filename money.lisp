@@ -17,7 +17,7 @@
 
 (defun money* (n money)
   (make-money :amount (* n (money-amount money))
-	      :currency (money-currency money)))
+        :currency (money-currency money)))
 
 (defun money= (money1 money2)
   (and (= (money-amount money1) (money-amount money2))

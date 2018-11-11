@@ -48,13 +48,13 @@
  (cute + <> 1) --> (let ((t1 1)) (lambda (<>) (+ <> t1)))
 And CUTE really is the name they give this in the Scheme SRFI... ugh."
   (let ((vars (loop for a in args
-		    collect (if (eq '<> a) '<> (gensym)))))
+        collect (if (eq '<> a) '<> (gensym)))))
     `(let ,(loop for a in args
-		 for v in vars
-		 unless (eq '<> a)
-		 collect (list v a))
+     for v in vars
+     unless (eq '<> a)
+     collect (list v a))
        (lambda (<>)
-	 (,fn ,@vars)))))
+   (,fn ,@vars)))))
 
 (define (an-idx)
   (list-to-idx (generate (a-list (a-tuple an-integer
@@ -64,8 +64,8 @@ And CUTE really is the name they give this in the Scheme SRFI... ugh."
   (for-all ((idx an-idx))
     (is idx-equal idx (idx-invert (idx-invert idx))))
   (for-all ((idx an-idx)
-	    (keys (a-list an-integer)))
+      (keys (a-list an-integer)))
     (test (every (cute subsetp (idx-lookup-all idx keys) <>)
-		 (lookup-each idx keys)))
+     (lookup-each idx keys)))
     (test (every (cute subsetp <> (idx-lookup-any idx keys))
-		 (lookup-each idx keys)))))
+     (lookup-each idx keys)))))

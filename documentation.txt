@@ -6,7 +6,7 @@ package and use it to test that 2+3=5:
   CL-USER> (load "cl-quickcheck.lisp")
   CL-USER> (use-package :cl-quickcheck)
   CL-USER> (cl-quickcheck (is= (+ 2 3) 5))
-  Starting tests with seed 
+  Starting tests with seed
   #S(RANDOM-STATE
      #*0110000000100101111101000101000111001100101100111001010111011101)
   .
@@ -19,7 +19,7 @@ cases:
   CL-USER> (cl-quickcheck (for-all ((s #'a-string))
               (is= s s)))
 
-  Starting tests with seed 
+  Starting tests with seed
   #S(RANDOM-STATE
      #*0101110101110110100110111101101110111011101011110000111001110000)
   ....................................................................................................
@@ -27,8 +27,8 @@ cases:
   T
 
   CL-USER> (cl-quickcheck (for-all ((n #'an-integer))
-			  (is= (* 2 n) (+ n n))))
-  Starting tests with seed 
+        (is= (* 2 n) (+ n n))))
+  Starting tests with seed
   #S(RANDOM-STATE
      #*0110000000100101111101000101000111001100101100111001010111011101)
   ....................................................................................................
@@ -41,11 +41,11 @@ was done on all those random values of N.  We could have done more
 tests:
 
   CL-USER> (cl-quickcheck (for-all ((n #'an-integer))
-			  (is= (* 2 n) (+ n n))
-			  (is= (* 3 n) (+ n n n)))
-			(for-all ((m #'an-integer) (n #'an-integer))
-			  (is= (+ m n) (+ n m))))
-  Starting tests with seed 
+        (is= (* 2 n) (+ n n))
+        (is= (* 3 n) (+ n n n)))
+      (for-all ((m #'an-integer) (n #'an-integer))
+        (is= (+ m n) (+ n m))))
+  Starting tests with seed
   #S(RANDOM-STATE
      #*1101011110111110101110111111111010110000111011101101010000100110)
   ............................................................................................................................................................................................................................................................................................................
@@ -61,8 +61,8 @@ wherever; typical usage is then like (cl-quickcheck (my-test-suite)) or
 Let's see what failure looks like:
 
   CL-USER> (cl-quickcheck (for-all ((n #'an-integer))
-			  (test (evenp n))))
-  Starting tests with seed 
+        (test (evenp n))))
+  Starting tests with seed
   #S(RANDOM-STATE
      #*1011111110011110110110101000010101100100101110101010000011111001)
   .X
@@ -81,16 +81,16 @@ waste of effort.
 
 You can define test-data generators for your own types of data:
 
-  CL-USER> (defparameter #'a-color 
-	     (lambda () 
-	       (pick-weighted 
-		 (1 'red)
-		 (2 'green)
-		 (1 'blue))))
+  CL-USER> (defparameter #'a-color
+       (lambda ()
+         (pick-weighted
+     (1 'red)
+     (2 'green)
+     (1 'blue))))
   A-COLOR
   CL-USER> (cl-quickcheck (for-all ((c #'a-color))
-			  (test (symbolp c))))
-  Starting tests with seed 
+        (test (symbolp c))))
+  Starting tests with seed
   #S(RANDOM-STATE
      #*1111010101010001100010110010000111111000110000001110000100100111)
   ....................................................................................................
@@ -104,21 +104,21 @@ mostly-functional style; but for the sake of other styles we can
 isolate tests using WRAP-EACH:
 
   CL-USER> (defun x-tests ()
-	     (wrap-each (let ((x (set-up-an-x)))
-			  (unwind-protect WRAPPEE
-			    (tear-down-an-x x)))
-	       (test (foo x))
-	       (test (bar x))))
+       (wrap-each (let ((x (set-up-an-x)))
+        (unwind-protect WRAPPEE
+          (tear-down-an-x x)))
+         (test (foo x))
+         (test (bar x))))
 
 which works as if we'd written
 
   CL-USER> (defun x-tests ()
-	     (let ((x (set-up-an-x)))
-	       (unwind-protect (test (foo x))
-		 (tear-down-an-x x)))
-	     (let ((x (set-up-an-x)))
-	       (unwind-protect (test (bar x))
-		 (tear-down-an-x x))))
+       (let ((x (set-up-an-x)))
+         (unwind-protect (test (foo x))
+     (tear-down-an-x x)))
+       (let ((x (set-up-an-x)))
+         (unwind-protect (test (bar x))
+     (tear-down-an-x x))))
 
 That's the gist of this package.  For more, see either the reference
 manual below, self-test.lisp, or the example test suites.
@@ -226,9 +226,9 @@ Variable *NUM-TRIALS*
 Number of random trials we want to see pass in FOR-ALL tests.
 
 Macro WRAP-EACH wrapper &body wrappees
-Perform each of the WRAPPEES as if surrounded by WRAPPER (with 
-the literal symbol WRAPPEE inside WRAPPER being the hole where the 
-wrappee appears).  This is useful for factoring out common setup/teardown 
+Perform each of the WRAPPEES as if surrounded by WRAPPER (with
+the literal symbol WRAPPEE inside WRAPPER being the hole where the
+wrappee appears).  This is useful for factoring out common setup/teardown
 code for a sequence of tests without compromising their isolation.
 
 

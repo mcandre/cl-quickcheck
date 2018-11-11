@@ -58,10 +58,10 @@
 (defpackage :cl-quickcheck
   (:export :quickcheck :collect-test-results :report
            :test :is :isnt :is= :isnt= :should-signal
-	   :named :wrap-each :only-if :for-all
-	   :an-index :an-integer :a-real :a-boolean :a-list :a-tuple :a-member :a-char :a-string :a-symbol
+     :named :wrap-each :only-if :for-all
+     :an-index :an-integer :a-real :a-boolean :a-list :a-tuple :a-member :a-char :a-string :a-symbol
            :k-generator :m-generator :n-generator
-	   :define :generate :pick-weighted
+     :define :generate :pick-weighted
            :*testing* :*break-on-failure* :*loud* :*num-trials* :*size*
            :test-name :test-flopped :test-detail :test-bindings)
   (:use :common-lisp))
@@ -101,18 +101,18 @@ detailing the failing arguments."
   (defmacro should-signal (condition &body body)
     "Test that evaluating BODY signals (a subtype of) CONDITION."
     `(run-should-signal '(should-signal ,condition ,@body)
-			,condition
-			(lambda () ,@body)))
+      ,condition
+      (lambda () ,@body)))
 
   (defmacro let-dfv (((name params &body body1)) &body body2)
     "Bind a dynamic function variable, with CALL-NEXT-FUNCTION in its
 body calling the same variable as bound in the enclosing dynamic scope."
     (let ((parent (gensym)))
       `(let ((,name (let ((,parent ,name))
-		      (flet ((call-next-function ,params
-			       (funcall ,parent ,@params)))
-			(lambda ,params ,@body1)))))
-	 ,@body2)))
+          (flet ((call-next-function ,params
+             (funcall ,parent ,@params)))
+      (lambda ,params ,@body1)))))
+   ,@body2)))
 
   (defmacro named (name &body tests)
     "Perform the given TESTS with all the test names set to NAME."
@@ -135,9 +135,9 @@ code for a sequence of tests without compromising their isolation."
     ;; TODO: use a macrolet for a cleaner expansion?  Make wrappee a
     ;; parameter?
     `(progn ,@(mapcar (lambda (wrappee)
-			`(symbol-macrolet ((wrappee ,wrappee))
-			   ,wrapper))
-		      wrappees)))
+      `(symbol-macrolet ((wrappee ,wrappee))
+         ,wrapper))
+          wrappees)))
 
   (defmacro only-if (flag test)
     "Perform the TEST only if FLAG is true, otherwise return a SKIPPED
@@ -148,16 +148,16 @@ test result whose name is TEST quoted."
     "Perform the test in BODY for random values of BINDINGS."
     (let ((bindings (mapcar #'normalize-binding bindings)))
       (let ((vars (mapcar #'first bindings))
-	    (generators (mapcar #'second bindings)))
-	`(run-for-all (lambda ,vars ,@body) ',vars ,@generators))))
+      (generators (mapcar #'second bindings)))
+  `(run-for-all (lambda ,vars ,@body) ',vars ,@generators))))
 
   (defun normalize-binding (binding)
     "Return BINDING's pair of name and generator expression."
     (cond ((and (consp binding) (= 2 (length binding)))
-	   binding)
-	  ((symbolp binding)
-	   (list binding (default-generator binding)))
-	  (t (error "Not a variable binding: ~S" binding))))
+     binding)
+    ((symbolp binding)
+     (list binding (default-generator binding)))
+    (t (error "Not a variable binding: ~S" binding))))
 
   (defun default-generator (name)
     "Give a generator expression for a name that's missing an explicit one.
@@ -180,7 +180,7 @@ You'll have to define the meaning of this shorthand elsewhere."
 (defstruct test
   name      ; What test was run.
   flopped   ; NIL if passed, 'SKIPPED if skipped, T if false assertion,
-	    ; or a condition if an error occurred.
+      ; or a condition if an error occurred.
   detail    ; Function of no args to write more info to stdout.
   bindings) ; A-list of variables and values from FOR-ALL.
 
@@ -210,7 +210,7 @@ You'll have to define the meaning of this shorthand elsewhere."
 return them in order of the first appearance of a case with that name."
   (let ((dups (collect-dups tests)))
     (loop for name in (unique-names tests)
-	  collect (gethash name dups))))
+    collect (gethash name dups))))
 
 (defun unique-names (tests)
   "Return the test-names of TESTS, in order of first appearance."
@@ -243,10 +243,10 @@ elements with the same name."
 (defun collect-test-results (fn)
   "Call FN with *TESTING* true, and return a list of the test results."
   (let ((tests '())
-	(*testing* t))
+  (*testing* t))
     (let-dfv ((*logger* (test)
-		(push test tests)
-		test))
+    (push test tests)
+    test))
       (funcall fn))
     (nreverse tests)))
 
@@ -254,7 +254,7 @@ elements with the same name."
   "Log a test outcome, with appropriate interactive side effects."
   (when (and *break-on-failure* flopped (not (eq flopped 'skipped)))
     (cerror "Run the remaining tests."
-	    "Test failed: ~S~a" name (capture-stdout (funcall detail))))
+      "Test failed: ~S~a" name (capture-stdout (funcall detail))))
   (show-progress flopped)
   (funcall *logger* (make-test :name name :flopped flopped :detail detail)))
 
@@ -274,15 +274,15 @@ list of a function to call for the actual test, plus its arguments."
     (if condition
         (answer name condition)
         (destructuring-bind (fn . arguments) fn-and-arguments
-	  (answer name
-		  (call-tester (lambda () (apply fn arguments)))
-		  (lambda ()
-		    (format t "~%  with values~{ ~S~}" arguments)))))))
+    (answer name
+      (call-tester (lambda () (apply fn arguments)))
+      (lambda ()
+        (format t "~%  with values~{ ~S~}" arguments)))))))
 
 (defun run-should-signal (name expected-condition fn)
   "Test that calling FN signals (a subtype of) EXPECTED-CONDITION."
   (multiple-value-bind (value condition)
-		       (ignore-errors (prog1 (funcall fn)))
+           (ignore-errors (prog1 (funcall fn)))
     (declare (ignore value))
     (answer name (not (typep condition expected-condition)))))
 
@@ -290,8 +290,8 @@ list of a function to call for the actual test, plus its arguments."
   "Behavior of the ONLY-IF macro."
   (multiple-value-bind (flag condition) (intercept-errors flag-fn)
     (cond (condition (answer flag-name condition))
-	  (flag (funcall test-fn))
-	  (t (answer name 'skipped)))))
+    (flag (funcall test-fn))
+    (t (answer name 'skipped)))))
 
 (defun intercept-errors (fn)
   (if *break-on-failure*
@@ -307,13 +307,13 @@ list of a function to call for the actual test, plus its arguments."
   "Repeatedly call TEST-FN with VARS bound to values from GENERATORS."
   (let ((status (make-hash-table :test #'equal)))
     (let-dfv ((*logger* (test)
-	        (let ((name (test-name test)))
-		  (setf (gethash name status)
-			(tally test (gethash name status 0)))
-		  (call-next-function test))))
+          (let ((name (test-name test)))
+      (setf (gethash name status)
+      (tally test (gethash name status 0)))
+      (call-next-function test))))
       (loop repeat (* 4 *num-trials*)
-	    do (run-trial test-fn vars generators)
-	    until (every #'judgedp (hash-table-values status))))))
+      do (run-trial test-fn vars generators)
+      until (every #'judgedp (hash-table-values status))))))
 ; TODO: we should record at this time whether a test passed
 ; *num-trials* times, rather than checking afterwards when
 ; *num-trials* could have a different value.
@@ -333,19 +333,19 @@ either passed *NUM-TRIALS* times or failed at least once."
   "Return a list of TABLE's values in arbitrary order."
   (let ((results '()))
     (maphash (lambda (key value)
-	       (declare (ignore key))
-	       (push value results))
-	     table)
+         (declare (ignore key))
+         (push value results))
+       table)
     results))
 
 (defun run-trial (test-fn vars generators)
   "Run one trial of a FOR-ALL test."
   (let* ((values (mapcar #'generate generators))
-	 (bindings (mapcar #'list vars values)))
+   (bindings (mapcar #'list vars values)))
     (let-dfv ((*logger* (test)
-	        (call-next-function
-		 (update-bindings test
-				  (append (test-bindings test) bindings)))))
+          (call-next-function
+     (update-bindings test
+          (append (test-bindings test) bindings)))))
       (apply test-fn values))))
 
 (defun generate (generator)
@@ -365,16 +365,16 @@ either passed *NUM-TRIALS* times or failed at least once."
   (defmacro define (binding &body body)
     "Like Scheme's top-level DEFINE, more or less."
     (cond ((symbolp binding)
-	   `(defparameter ,binding ,@body))
-	  (t (let ((fn (first binding))
-		   (params (rest binding)))
-	       (if (and (stringp (first body))
-			(not (null (rest body))))
-		   `(defparameter ,fn
-		      (lambda ,params ,@body)
-		      ,(first body))
-		   `(defparameter ,fn
-		      (lambda ,params ,@body))))))))
+     `(defparameter ,binding ,@body))
+    (t (let ((fn (first binding))
+       (params (rest binding)))
+         (if (and (stringp (first body))
+      (not (null (rest body))))
+       `(defparameter ,fn
+          (lambda ,params ,@body)
+          ,(first body))
+       `(defparameter ,fn
+          (lambda ,params ,@body))))))))
 
 (define (a-boolean)
   (= 0 (random 2)))
@@ -428,13 +428,13 @@ either passed *NUM-TRIALS* times or failed at least once."
 (defmacro pick-weighted (&body choices)
   "Given CHOICES with constant weights, pick a random one at runtime."
   (let ((total (loop for (weight . body) in choices
-		     sum weight))
-	(var (gensym))
-	(accum 0))
+         sum weight))
+  (var (gensym))
+  (accum 0))
     `(let ((,var (random ,total)))
        (cond ,@(loop for (weight . body) in choices
-		     collect `((< ,var ,(incf accum weight)) ,@body))
-	     (t (error "Bug"))))))
+         collect `((< ,var ,(incf accum weight)) ,@body))
+       (t (error "Bug"))))))
 
 ; Reporting results
 
@@ -445,10 +445,10 @@ either passed *NUM-TRIALS* times or failed at least once."
   "Write a single character as a bird's-eye view of a test result."
   (when *loud*
     (write-char (case flopped
-		  ((nil)     #\.)
-		  ((skipped) #\-)
-		  ((t)       #\X)
-		  (t         #\@)))
+      ((nil)     #\.)
+      ((skipped) #\-)
+      ((t)       #\X)
+      (t         #\@)))
     (force-output)))
 
 (defun run-quickcheck (fn)
@@ -459,7 +459,7 @@ either passed *NUM-TRIALS* times or failed at least once."
 (defun report (test-cases)
   "Print out the interesting test results in longer form."
   (let* ((tests (sort-out test-cases))
-	 (verdicts (mapcar #'verdict tests)))
+   (verdicts (mapcar #'verdict tests)))
     (mapc #'summarize-test tests)
     (summarize-all verdicts)
     (every #'test-passed verdicts)))
@@ -467,16 +467,16 @@ either passed *NUM-TRIALS* times or failed at least once."
 (defun summarize-test (cases)
   "Report the results of the test cases of a test, if they're interesting."
   (multiple-value-bind (num-failed num-skipped num-passed num-cases)
-		       (distribution cases)
+           (distribution cases)
     (unless (and (= 0 num-failed)
-		 (or (= 0 num-skipped) (<= *num-trials* num-passed)))
+     (or (= 0 num-skipped) (<= *num-trials* num-passed)))
       (print-test (verdict cases))
       (when (< 1 num-cases)
-	(when (< 0 num-failed)
-	  (format t "~%  ~a/~a counterexamples." num-failed num-cases))
-	(when (< 0 num-skipped)
-	  (format t "~%  ~a case~p checked and passed in ~a attempts."
-		  num-passed num-passed num-cases))))))
+  (when (< 0 num-failed)
+    (format t "~%  ~a/~a counterexamples." num-failed num-cases))
+  (when (< 0 num-skipped)
+    (format t "~%  ~a case~p checked and passed in ~a attempts."
+      num-passed num-passed num-cases))))))
 
 (defun print-test (test)
   (let ((flopped (test-flopped test)))
@@ -496,7 +496,7 @@ either passed *NUM-TRIALS* times or failed at least once."
 
 (defun summarize-all (verdicts)
   (multiple-value-bind (num-failed num-skipped num-passed total)
-		       (distribution verdicts)
+           (distribution verdicts)
     (format t "~%~a test~p submitted" total total)
     (when (and (< 0 total) (= num-passed total))
       (format t "; all passed"))
@@ -509,9 +509,9 @@ either passed *NUM-TRIALS* times or failed at least once."
 (defun distribution (tests)
   "Count test cases failed, skipped, passed, and total."
   (values (count-if #'test-failed tests)
-	  (count-if #'test-skipped tests)
-	  (count-if #'test-passed tests)
-	  (length tests)))
+    (count-if #'test-skipped tests)
+    (count-if #'test-passed tests)
+    (length tests)))
 
 (defun verdict (tests)
   "Choose the most significant result from TESTS: failed, passed, or
