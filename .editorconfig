@@ -15,7 +15,7 @@ insert_final_newline = none
 indent_size = none
 
 # Freeform text
-[{*.txt,*.md,*.yaml,*.yml,*.cob,*.emacs,*.el,*.lisp,*.lsp,*.scm,*.clj,*.rkt,*.ecl,*.sbcl,*.abcl,*.eclrc,*.sbclrc,*.asd,*.snusp}]
+[{*.txt,*.md,*.yaml,*.yml,*.cob,*.emacs,*.el,*.lisp,*.lsp,*.scm,*.setup,*.meta,*.clj,*.rkt,*.ecl,*.sbcl,*.abcl,*.eclrc,*.sbclrc,*.asd,*.snusp}]
 indent_size = none
 
 # Placeholder files
